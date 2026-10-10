@@ -9,8 +9,8 @@ Group project for the Image Processing module at TU Dublin.
 | Name | Student Number |
 |------|----------------|
 | Emma Radojcic | C22369396 |
-| [Teammate 1 name] | [Student number] |
-| [Teammate 2 name] | [Student number] |
+| Amar Jagana | C22423526  |
+| Guilherme Crolla | C23336533 |
 
 ## About the Project
 
@@ -21,8 +21,8 @@ Each team member develops their own filters in a separate folder, using classica
 | Filter | Developer | Status |
 |--------|-----------|--------|
 | Dreamy Glow | Emma | ✅ Done |
-| Vignette | [Teammate name] | ✅ Done |
-| [Filter name] | [Teammate name] | ✅ Done |
+| Vignette | Amar | ✅ Done |
+| Thermal | Emma | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
@@ -40,6 +40,4 @@ Requires Python 3 with the following packages:
 ## Blogs
 
 - Emma: https://c22369396.wordpress.com/
-- [Teammate 1 name]: [blog link]
-- [Teammate 2 name]: [blog link]
 
