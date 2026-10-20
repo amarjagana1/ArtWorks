@@ -24,6 +24,7 @@ Each team member develops their own filters in a separate folder, using classica
 | Vignette | Amar | ✅ Done |
 | Thermal | Emma | ✅ Done |
 | Duotone Popart | Guilherme | ✅ Done |
+| Red Pop | Guilherme | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
