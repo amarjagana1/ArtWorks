@@ -23,6 +23,7 @@ Each team member develops their own filters in a separate folder, using classica
 | Dreamy Glow | Emma | ✅ Done |
 | Vignette | Amar | ✅ Done |
 | Thermal | Emma | ✅ Done |
+| Duotone Popart | Guilherme | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
