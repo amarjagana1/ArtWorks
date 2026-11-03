@@ -25,6 +25,7 @@ Each team member develops their own filters in a separate folder, using classica
 | Thermal | Emma | ✅ Done |
 | Duotone Popart | Guilherme | ✅ Done |
 | Red Pop | Guilherme | ✅ Done |
+| Vinatage | Guilherme | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
@@ -43,3 +44,4 @@ Requires Python 3 with the following packages:
 
 - Emma: https://c22369396.wordpress.com/
 
+- Guilherme: https://c23336533.wordpress.com/
