@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ArtWorks Filters</title>
+<style>
+  :root { --bg:#f6f4ef; --card:#fff; --ink:#222; --muted:#6b6b6b; --accent:#c8402f; --line:#ddd8cc; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17171a; --card:#222226; --ink:#eee; --muted:#9a9aa2; --accent:#ff6a55; --line:#38383e; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,sans-serif; }
+  main { max-width:1000px; margin:0 auto; padding:32px 16px 64px; }
+  h1 { margin:0 0 4px; font-size:28px; }
+  .sub { color:var(--muted); margin:0 0 24px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+  .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:end; }
+  label { display:block; font-size:13px; color:var(--muted); margin-bottom:4px; }
+  input[type=file], select { padding:9px 10px; border:1px solid var(--line); border-radius:8px;
+    background:var(--bg); color:var(--ink); font:inherit; min-width:220px; }
+  button { padding:10px 22px; border:0; border-radius:8px; background:var(--accent); color:#fff;
+    font:inherit; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  #status { margin:16px 0 0; min-height:24px; color:var(--muted); }
+  #status.err { color:#d33; white-space:pre-wrap; }
+  .spin { display:inline-block; width:14px; height:14px; border:2px solid var(--line);
+    border-top-color:var(--accent); border-radius:50%; animation:s .8s linear infinite; vertical-align:-2px; margin-right:6px; }
+  @keyframes s { to { transform:rotate(360deg); } }
+  .images { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px; }
+  @media (max-width:700px) { .images { grid-template-columns:1fr; } }
+  figure { margin:0; }
+  figcaption { font-size:13px; color:var(--muted); margin-bottom:6px; display:flex; justify-content:space-between; }
+  img { width:100%; border-radius:8px; border:1px solid var(--line); background:var(--bg); display:block; }
+  .empty { aspect-ratio:4/3; display:grid; place-items:center; border:1px dashed var(--line);
+    border-radius:8px; color:var(--muted); font-size:14px; }
+  a.dl { color:var(--accent); text-decoration:none; font-weight:600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ArtWorks Filters</h1>
+  <p class="sub">Upload a photo, choose a filter, and run it.</p>
+
+  <form id="form" class="card">
+    <div class="controls">
+      <div>
+        <label for="image">Image</label>
+        <input type="file" id="image" accept="image/*" required>
+      </div>
+      <div>
+        <label for="filter">Filter</label>
+        <select id="filter">
+          {% for f in filters %}<option>{{ f }}</option>{% endfor %}
+        </select>
+      </div>
+      <button id="go" type="submit">Run filter</button>
+    </div>
+    <div id="status"></div>
+  </form>
+
+  <div class="images">
+    <figure>
+      <figcaption><span>Original</span></figcaption>
+      <div id="origBox" class="empty">No image selected</div>
+    </figure>
+    <figure>
+      <figcaption><span>Result</span><a id="dl" class="dl" hidden download="filtered.png">Download</a></figcaption>
+      <div id="outBox" class="empty">Result appears here</div>
+    </figure>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const status = (html, err=false) => { $("status").className = err ? "err" : ""; $("status").innerHTML = html; };
+
+$("image").addEventListener("change", e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  $("origBox").outerHTML = `<img id="origBox" alt="Original" src="${URL.createObjectURL(f)}">`;
+  $("outBox").outerHTML = `<div id="outBox" class="empty">Result appears here</div>`;
+  $("dl").hidden = true;
+  status("");
+});
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = $("image").files[0];
+  if (!f) return status("Please choose an image first.", true);
+  const fd = new FormData();
+  fd.append("image", f);
+  fd.append("filter", $("filter").value);
+
+  $("go").disabled = true;
+  status('<span class="spin"></span>Running ' + $("filter").value + '… large photos can take a while.');
+  try {
+    const res = await fetch("/run", { method:"POST", body:fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Something went wrong.");
+    $("outBox").outerHTML = `<img id="outBox" alt="Filtered result" src="${data.url}">`;
+    $("dl").href = data.url;
+    $("dl").download = f.name.replace(/\.[^.]+$/, "") + "_" + $("filter").value.toLowerCase().replace(/\W+/g,"_") + ".png";
+    $("dl").hidden = false;
+    status("Done.");
+  } catch (err) {
+    status(err.message, true);
+  } finally {
+    $("go").disabled = false;
+  }
+});
+</script>
+</body>
+</html>
