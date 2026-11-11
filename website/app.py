@@ -1,11 +1,11 @@
 """
 ArtWorks filter website.
 
-Upload an image, pick one of Guilherme's filters, press Run.
-The filters in ../ArtWorks/Guilherme are run UNCHANGED, exactly like on the
-command line:   python <filter>.py imagename.jpg
-Each run happens in its own temporary folder, so the Guilherme/Output folder
-is never touched.
+Upload an image, pick one of the team's filters, press Run.
+The filter scripts (in ../Guilherme and ../emma) are run UNCHANGED, exactly
+like on the command line:   python <filter>.py imagename.jpg
+Each run happens in its own temporary folder, so the members' output folders
+are never touched.
 
 Run:   python app.py      then open http://127.0.0.1:5000
 """
@@ -19,13 +19,17 @@ from pathlib import Path
 from flask import Flask, jsonify, render_template, request, send_file
 
 HERE = Path(__file__).resolve().parent
-FILTER_DIR = (HERE.parent / "Guilherme").resolve()
+ROOT = HERE.parent
 
-# label shown in dropdown -> (script, suffix the script adds to the output name)
+# label shown in dropdown -> (member folder, script, suffix the script adds to the output name)
 FILTERS = {
-    "Duotone Pop Art":  ("popart_duotone.py", "_popart"),
-    "Red Pop":          ("Red_Pop.py",        "_redpop"),
-    "Vintage":          ("vintage_filter.py", "_vintage"),
+    "Duotone Pop Art":  ("Guilherme", "popart_duotone.py", "_popart"),
+    "Red Pop":          ("Guilherme", "Red_Pop.py",        "_redpop"),
+    "Vintage":          ("Guilherme", "vintage_filter.py", "_vintage"),
+    "Dreamy Glow":      ("emma",      "dreamy_glow.py",    "_glow"),
+    "Thermal Vision":   ("emma",      "thermal_vision.py", "_thermal"),
+    "Comic Book":       ("emma",      "comic_book.py",     "_comic"),
+    "Oil Painting":     ("emma",      "oil_painting.py",   "_oil"),
 }
 
 ALLOWED = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".webp"}
@@ -52,10 +56,10 @@ def run():
     if ext not in ALLOWED:
         return jsonify(error=f"Unsupported file type {ext or '(none)'}."), 400
 
-    script, suffix = FILTERS[name]
+    folder, script, suffix = FILTERS[name]
     work = Path(tempfile.mkdtemp(prefix="artworks_"))
     try:
-        shutil.copy(FILTER_DIR / script, work / script)
+        shutil.copy(ROOT / folder / script, work / script)
         src = work / f"upload{ext}"
         file.save(src)
 
@@ -63,8 +67,9 @@ def run():
             [sys.executable, script, src.name],
             cwd=work, capture_output=True, text=True, timeout=600,
         )
-        out = work / "Output" / f"{src.stem}{suffix}.png"
-        if proc.returncode != 0 or not out.exists():
+        # each member saves to their own output folder (Output/, images/output/...)
+        out = next(work.rglob(f"{src.stem}{suffix}.png"), None)
+        if proc.returncode != 0 or out is None:
             msg = (proc.stderr or proc.stdout or "Filter failed.").strip()
             return jsonify(error=msg), 500
 

@@ -26,6 +26,8 @@ Each team member develops their own filters in a separate folder, using classica
 | Duotone Popart | Guilherme | ✅ Done |
 | Red Pop | Guilherme | ✅ Done |
 | Vinatage | Guilherme | ✅ Done |
+| Comic Book | Emma | ✅ Done |
+| Oil Painting | Emma | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
@@ -39,6 +41,20 @@ Requires Python 3 with the following packages:
 2. Make sure your test photos are in that member's `images/input` folder
 3. Run all cells from top to bottom
 4. Filtered images are saved to `images/output`
+
+Filters can also be run as scripts, e.g. `python emma/comic_book.py Portrait.jpg`.
+
+### Website
+
+Run every filter from the browser:
+
+```
+cd website
+pip install -r requirements.txt
+python app.py
+```
+
+Then open http://127.0.0.1:5000, upload a photo and choose a filter.
 
 ## Blogs
 
