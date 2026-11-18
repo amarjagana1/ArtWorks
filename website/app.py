@@ -31,6 +31,10 @@ FILTERS = {
     "Thermal Vision":   ("emma",      "thermal_vision.py", "_thermal"),
     "Comic Book":       ("emma",      "comic_book.py",     "_comic"),
     "Oil Painting":     ("emma",      "oil_painting.py",   "_oil"),
+    "Saturation":       ("amar",      "Saturation.py",     "_saturation"),
+    "Pencil Sketch":    ("amar",      "Pencil.py",         "_sketch"),
+    "Emboss":           ("amar",      "Emboss.py",         "_emboss"),
+    "Vignette":         ("amar",      "Vignette.py",       "_vignette"),
 }
 
 ALLOWED = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".webp"}
