@@ -26,6 +26,7 @@ FILTERS = {
     "Duotone Pop Art":  ("Guilherme", "popart_duotone.py", "_popart"),
     "Red Pop":          ("Guilherme", "Red_Pop.py",        "_redpop"),
     "Vintage":          ("Guilherme", "vintage_filter.py", "_vintage"),
+    "Cyberpsychosis":   ("Guilherme", "cyberpsychosis.py", "_cyberpsychosis"),
     "Dreamy Glow":      ("emma",      "dreamy_glow.py",    "_glow"),
     "Thermal Vision":   ("emma",      "thermal_vision.py", "_thermal"),
     "Comic Book":       ("emma",      "comic_book.py",     "_comic"),

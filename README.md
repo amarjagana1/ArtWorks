@@ -28,6 +28,7 @@ Each team member develops their own filters in a separate folder, using classica
 | Vinatage | Guilherme | ✅ Done |
 | Comic Book | Emma | ✅ Done |
 | Oil Painting | Emma | ✅ Done |
+| Cyberpsychosis | Guilherme | ✅ Done |
 
 *More filters will be added as they're allocated each week.*
 
